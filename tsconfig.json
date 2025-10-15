@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "noImplicitThis": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@/*": ["./assets/js/*"]
+    }
+  },
+  "include": [
+    "assets/**/*.ts",
+    "assets/**/*.js",
+    "assets/**/*.vue"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

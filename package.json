@@ -1,0 +1,41 @@
+{
+    "devDependencies": {
+        "@babel/core": "^7.17.0",
+        "@babel/preset-env": "^7.16.0",
+        "@symfony/webpack-encore": "^5.0.0",
+        "core-js": "^3.46.0",
+        "regenerator-runtime": "^0.14.1",
+        "sass": "^1.93.2",
+        "sass-loader": "^16.0.1",
+        "ts-loader": "^9.5.4",
+        "typescript": "^5.9.3",
+        "webpack": "^5.74.0",
+        "webpack-cli": "^5.1.0",
+        "webpack-notifier": "^1.15.0",
+        "webpack-plugin-vuetify": "^3.1.2"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "dependencies": {
+        "@mdi/font": "^7.4.47",
+        "@vue/compiler-sfc": "^3.5.22",
+        "axios": "^1.12.2",
+        "es6-promise": "^4.2.8",
+        "es6-shim": "^0.35.8",
+        "mitt": "^3.0.1",
+        "pinia": "^3.0.3",
+        "vue": "^3.5.22",
+        "vue-axios": "^3.5.2",
+        "vue-loader": "^17.0.0",
+        "vue-router": "4",
+        "vue-the-mask": "^0.11.1",
+        "vue3-toastify": "^0.2.8",
+        "vuetify": "^3.4.0"
+    }
+}
