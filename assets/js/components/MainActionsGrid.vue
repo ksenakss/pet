@@ -4,15 +4,11 @@
             <v-card
                 class="pa-4 action-card block"
                 height="120"
-                :class="`bg-color-${index % 3}`"
                 @click="handleAction(action.action)"
             >
-                <v-card-title class="text-h6 text-center">
+                <v-card-title class="text-h5 text-center">
                     {{ action.title }}
                 </v-card-title>
-                <v-card-text class="text-center text--secondary">
-                    {{ action.description }}
-                </v-card-text>
             </v-card>
         </v-col>
     </v-row>
@@ -76,10 +72,11 @@ const handleAction = (action: string) => {
 .action-card {
     cursor: pointer;
     transition: all 0.3s ease;
+    align-content: center;
+    background-color: var(--primary-color-light-marine);
 }
 
 .action-card:hover {
-    transform: translateY(-5px);
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
 }
 </style>

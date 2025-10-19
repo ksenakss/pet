@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\OrganizationRepository;
+use App\Repository\CompanyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-#[ORM\Entity(repositoryClass: OrganizationRepository::class)]
-class Organization
+#[ORM\Entity(repositoryClass: CompanyRepository::class)]
+class Company
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,7 +21,7 @@ class Organization
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'organization', targetEntity: User::class)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: User::class)]
     private Collection $users;
 
     public function __construct()
@@ -70,7 +70,7 @@ class Organization
     {
         if (!$this->users->contains($user)) {
             $this->users->add($user);
-            $user->setOrganization($this);
+            $user->setCompany($this);
         }
 
         return $this;
@@ -80,8 +80,8 @@ class Organization
     {
         if ($this->users->removeElement($user)) {
             // set the owning side to null (unless already changed)
-            if ($user->getOrganization() === $this) {
-                $user->setOrganization(null);
+            if ($user->getCompany() === $this) {
+                $user->setCompany(null);
             }
         }
 

@@ -9,7 +9,7 @@ export const registerVuetify = (app, themeData = {}) => {
                 light: {
                     colors: {
                         background: '#f5f5f5',
-                        primary: '#A4C6BE',
+                        primary: '#5FA897',
                         secondary: '#F6F3D6',
                     },
                 },

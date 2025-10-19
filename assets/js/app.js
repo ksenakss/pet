@@ -15,17 +15,21 @@ import { registerVuetify } from './plugins/vuetify';
 
 import App from './components/App.vue';
 import AppBar from "./components/AppBar.vue";
+import AnonAppBar from "./components/AnonAppBar.vue";
 
 export const emitter = mitt();
 export const app = createApp(App);
 const pinia = createPinia();
 
 app.component('app-bar', AppBar);
+app.component('anon-app-bar', AnonAppBar);
 app.provide('emitter', emitter);
 app.use(VueAxios, axios);
 app.use(pinia);
 app.use(VueTheMask);
-app.use(Vue3Toastify, { autoClose: 3000 });
+app.use(Vue3Toastify, {
+    autoClose: 3000
+});
 app.config.globalProperties.$axios = axios;
 
 export let router = null;

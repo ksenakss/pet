@@ -52,8 +52,7 @@
                         </v-list-item>
                     </v-list>
                 </div>
-                <MainActionsGrid></MainActionsGrid>
-                <v-btn @click="test">Test Button</v-btn>
+                <MainActionsGrid/>
             </div>
         </v-main>
     </v-container>

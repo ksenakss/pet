@@ -1,20 +1,19 @@
 <template>
   <span class="app-bar">
     <v-btn
-      class="ma-5"
-      color="primary"
-      @click="goToMain"
+        class="ma-5"
+        color="primary"
+        @click="goToMain"
     >
       Главная
     </v-btn>
     <v-btn
         class="ml-auto ma-5"
         color="primary"
-        @click="GoToProfile"
+        @click="goToLogin"
     >
-      Профиль
+      Войти
     </v-btn>
-      <a class="actionLink" href="/auth/logout">Выйти из личного кабинета</a>
   </span>
 </template>
 
@@ -33,10 +32,10 @@ export default {
     },
     methods: {
         goToMain() {
-            this.$router.push({name:'home'})
+            this.$router.push({name:'public-home'})
         },
-        GoToProfile(){
-            this.$router.push({name:'profile'})
+        goToLogin(){
+            this.$router.push({name:'login'})
         }
     },
     computed: {

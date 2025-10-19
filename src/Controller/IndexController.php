@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/')]
-class IndexController extends AbstractController
+class IndexController extends BaseController
 {
     #[Route('/', name: 'landing')]
     public function index(): Response
@@ -16,7 +16,7 @@ class IndexController extends AbstractController
         return $this->render('base.html.twig');
     }
 
-    #[Route('/initialize')] // Без /api префикса как в рабочем проекте
+    #[Route('/initialize')]
     public function initialize(): JsonResponse
     {
         $user = $this->getUser();

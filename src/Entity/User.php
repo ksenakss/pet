@@ -6,10 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,9 +27,9 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(targetEntity: Organization::class, inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'users')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Organization $organization = null;
+    private ?Company $company = null;
 
     public function __construct()
     {
@@ -74,15 +76,30 @@ class User
         return $this;
     }
 
-    public function getOrganization(): ?Organization
+    public function getCompany(): ?Company
     {
-        return $this->organization;
+        return $this->company;
     }
 
-    public function setOrganization(?Organization $organization): static
+    public function setCompany(?Company $company): static
     {
-        $this->organization = $organization;
+        $this->company = $company;
 
         return $this;
+    }
+
+    //UserInterface
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
+    public function eraseCredentials(): void
+    {
     }
 }

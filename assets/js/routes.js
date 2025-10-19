@@ -1,52 +1,15 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import Config from './config';
 
-// Layouts
 import AnonLayout from './layouts/AnonLayout.vue';
 import AuthedLayout from './layouts/AuthedLayout.vue';
 
-// Pages
 import Login from './pages/public/Login.vue';
+import Register from './pages/public/Register.vue';
 import Home from './pages/Home.vue';
+import PublicHome from './pages/Home.vue';
 import ViewDatabasePage from "@/pages/ViewDatabasePage.vue";
-
-const menu = [
-    {
-        name: 'Процедуры',
-        path: '/procedures',
-        icon: 'file-document-multiple-outline',
-        requireAccreditation: true
-    }
-];
-
-const adminMenu = [
-    {
-        name: 'Процедуры',
-        path: '/procedures',
-        icon: 'file-document-multiple-outline',
-    }
-];
-
-const adminRoutes = {
-    component: AuthedLayout,
-    path: '/admin',
-    name: 'admin-parent',
-    meta: {
-        allowedRoles: ['ROLE_ADMIN'],
-        redirectForbiddenTo: (user) => `/procedures`
-    },
-    children: [
-        {
-            path: '/admin/procedures',
-            name: 'admin.procedures.all',
-            component: Home,
-            meta: {
-                title: 'Все процедуры',
-                requiresAuth: true,
-            },
-        }
-    ]
-};
+import Profile from '@/pages/Profile.vue'
 
 /**
  * Роуты под компонент с авторизированным доступом
@@ -56,22 +19,18 @@ const protectedRoute = {
     name: 'procedures-parent',
     component: AuthedLayout,
     meta: {
-        title: 'Процедуры',
+        title: '',
         requiresAuth: true,
     },
-    redirect: () => {
-        return Config.isGuest() ? '/auth/login' : '/procedures';
-    },
-    guestRedirect: '/auth/login',
     children: [
         {
-            path: '/procedures',
-            name: 'procedures.all',
-            component: Home,
+            path: '/profile',
+            name: 'profile',
+            component: Profile,
             meta: {
-                title: 'Все процедуры',
+                title: 'Профиль',
                 requiresAuth: true,
-            },
+            }
         },
         {
             path: '/',
@@ -81,19 +40,38 @@ const protectedRoute = {
                 title: 'Главная',
                 requiresAuth: true,
             },
-        }
+        },
+        {
+            path: '/viewDatabase',
+            name: 'viewDatabase',
+            component: ViewDatabasePage,
+            meta: {
+                requiresAuth: true,
+            },
+        },
     ]
 };
 
 /**
  * Роуты под компонент с анонимным доступом.
- * Без меню и информации о пользователе.
  */
 const publicRoute = {
-    path: '/auth',
+    path: '/',
     name: 'auth-parent',
     component: AnonLayout,
+    meta: {
+        requiresAuth: false,
+    },
     children: [
+        {
+            path: '/',
+            name: 'public-home',
+            component: PublicHome,
+            meta: {
+                title: 'Главная',
+                requiresAuth: false,
+            },
+        },
         {
             path: '/auth/login',
             name: 'login',
@@ -103,9 +81,9 @@ const publicRoute = {
             },
         },
         {
-            path: '/viewDatabase',
-            name: 'viewDatabase',
-            component: ViewDatabasePage,
+            path: '/auth/register',
+            name: 'register',
+            component: Register,
             meta: {
                 requiresAuth: false,
             },
@@ -116,33 +94,23 @@ const publicRoute = {
 function makeRouter(user = null) {
     const router = createRouter({
         history: createWebHashHistory(),
-        routes: [protectedRoute, publicRoute, adminRoutes],
+        routes: [protectedRoute, publicRoute],
     });
 
     router.beforeEach((to, from, next) => {
-        if (to.matched.some((route) => route.meta.requiresAuth)) {
-            // const user = Config.getUser();
-            //
-            // if (!user || !user.hasOpts()) {
-            //     sessionStorage.setItem('redirectUrlAfterLogin', to.fullPath);
-            //     next({
-            //         path: '/auth/login',
-            //     });
-            // } else {
-            //     const routeWithRoles = to.matched.find(route => route.meta.allowedRoles);
-            //     if (routeWithRoles) {
-            //         // const hasAccess = routeWithRoles.meta.allowedRoles.some(role => user.hasRole(role));
-            //         // if (!hasAccess) {
-            //         //     return next({path: routeWithRoles.meta.redirectForbiddenTo(user)});
-            //         // } else {
-            //         return next()
-            //         // }
-            //     } else {
-            //         return next()
-            //     }
-            // }
+        const user = Config.getUser();
+        const isAuthenticated = user && user.hasOpts();
+
+        if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
+            next('/auth/login');
+        }
+        else if ((to.name === 'login' || to.name === 'register') && isAuthenticated) {
+            next('/');
+        }
+        else if (to.name === 'public-home') {
             next();
-        } else {
+        }
+        else {
             next();
         }
     });
@@ -150,16 +118,4 @@ function makeRouter(user = null) {
     return router;
 }
 
-/**
- *
- * @param {User} user
- */
-function makeMenu(user) {
-    if (user.hasRole('ROLE_ADMIN')) {
-        return adminMenu;
-    }
-
-    return menu;
-}
-
-export { makeRouter, makeMenu };
+export { makeRouter };
